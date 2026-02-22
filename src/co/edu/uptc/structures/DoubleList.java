@@ -69,14 +69,14 @@ public boolean add(T e) {
     if (!(o instanceof DoubleList)) { 
 		return false;
     }
-    DoubleList<T> other = (DoubleList<T>) o;
+    DoubleList<?> other = (DoubleList<?>) o;
     if (this.size() != other.size()) {
         return false;
     }
 		return equalsAux(o, other);
 	}
 
-	public boolean equalsAux(Object o, DoubleList<T> other){
+	public boolean equalsAux(Object o, DoubleList<?> other){
 	Node<T> currentThis = this.head;
     Node<?> currentOther = (Node<?>) other.head;
     while (currentThis != null) {
