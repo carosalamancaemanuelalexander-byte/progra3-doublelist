@@ -130,7 +130,18 @@ public class DoubleList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
-		// TODO Auto-generated method stub
+		if(index<0||index>=size()){
+			throw new  IndexOutOfBoundsException();
+		}
+		int current=0;
+		Node <T> aux=head;
+		while(aux!=null){
+			if(current==index){
+				return aux.getValue();
+			}
+			aux=aux.getNext();
+			current++;
+		}
 		return null;
 	}
 
