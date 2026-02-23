@@ -33,7 +33,16 @@ public class DoubleList<T> implements List<T> {
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		if (o==null) {
+			throw new NullPointerException("La lista no permite datos nulos");
+		}
+		Node<T> auxNode = head;
+		for (int i = 0; i < size; i++) {
+			if (auxNode.getValue().equals(o)) {
+				return true;
+			}
+			auxNode = auxNode.getNext();
+		}
 		return false;
 	}
 
