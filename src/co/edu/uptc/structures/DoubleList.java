@@ -1,6 +1,5 @@
 package co.edu.uptc.structures;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -38,10 +37,24 @@ public class DoubleList<T> implements List<T> {
 		return null;
 	}
 	@Override
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Object[] toArray() {
+        // TODO Auto-generated method stub
+        if (isEmpty()) {
+            return new Object[0];
+        }
+        int size = size();
+        Object[] array = new Object[size];
+
+        Node<T> current = head;
+        int index = 0;
+
+        while(current!=null){
+            array[index] = current.getValue();
+            current = current.getNext();
+            index++;
+        }
+        return array;
+    }
 	@Override
 	public <T> T[] toArray(T[] a) {
 		// TODO Auto-generated method stub
