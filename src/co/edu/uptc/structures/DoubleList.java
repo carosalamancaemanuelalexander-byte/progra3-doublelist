@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-
 public class DoubleList<T> implements List<T> {
 	private Node<T> head;
 	private Node<T> tail;
@@ -276,8 +275,110 @@ public boolean addAll(int index, Collection<? extends T> c) {
 
 	@Override
 	public ListIterator<T> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+	    return new ListIterator<T>() {
+	        private Node<T> current = head;
+	        private Node<T> lastReturned = null;
+	        private int index = 0;
+
+	        @Override
+	        public boolean hasNext() {
+	            return index < size;
+	        }
+
+	        @Override
+	        public T next() {
+	            if (!hasNext()) throw new NoSuchElementException();
+	            lastReturned = current;
+	            current = current.getNext();
+	            index++;
+	            return lastReturned.getValue();
+	        }
+
+	        @Override
+	        public boolean hasPrevious() {
+	            return index > 0;
+	        }
+
+	        @Override
+	        public T previous() {
+	            if (!hasPrevious()) throw new NoSuchElementException();
+	            if (current == null) {
+	                current = tail;
+	            } else {
+	                current = current.getPrevious();
+	            }
+	            lastReturned = current;
+	            index--;
+	            return lastReturned.getValue();
+	        }
+
+	        @Override
+	        public int nextIndex() {
+	            return index;
+	        }
+
+	        @Override
+	        public int previousIndex() {
+	            return index - 1;
+	        }
+
+	        @Override
+	        public void remove() {
+	            if (lastReturned == null) throw new IllegalStateException();
+	            Node<T> prevNode = lastReturned.getPrevious();
+	            Node<T> nextNode = lastReturned.getNext();
+	            if (prevNode != null) {
+	                prevNode.setNext(nextNode);
+	            } else {
+	                head = nextNode;
+	            }
+	            if (nextNode != null) {
+	                nextNode.setPrevious(prevNode);
+	            } else {
+	                tail = prevNode;
+	            }
+	            if (lastReturned == current) {
+	                current = nextNode;
+	            } else {
+	                index--;
+	            }
+	            size--;
+	            lastReturned = null;
+	        }
+
+	        @Override
+	        public void set(T t) {
+	            if (lastReturned == null) throw new IllegalStateException();
+	            lastReturned.setValue(t);
+	        }
+
+	        @Override
+	        public void add(T t) {
+	            Node<T> newNode = new Node<>(t);
+	            if (current == null) {
+	                if (tail != null) {
+	                    tail.setNext(newNode);
+	                    newNode.setPrevious(tail);
+	                    tail = newNode;
+	                } else {
+	                    head = tail = newNode;
+	                }
+	            } else {
+	                Node<T> prevNode = current.getPrevious();
+	                newNode.setNext(current);
+	                newNode.setPrevious(prevNode);
+	                current.setPrevious(newNode);
+	                if (prevNode != null) {
+	                    prevNode.setNext(newNode);
+	                } else {
+	                    head = newNode;
+	                }
+	            }
+	            size++;
+	            index++;
+	            lastReturned = null;
+	        }
+	    };
 	}
 
 	@Override
